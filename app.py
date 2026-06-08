@@ -40,6 +40,8 @@ if "selected_symbol" not in st.session_state: st.session_state.selected_symbol =
 if "order_result"    not in st.session_state: st.session_state.order_result    = None
 if "order_error"     not in st.session_state: st.session_state.order_error     = None
 if "orders_history"  not in st.session_state: st.session_state.orders_history  = []
+if "trade_side"      not in st.session_state: st.session_state.trade_side      = "BUY"
+if "trade_type"      not in st.session_state: st.session_state.trade_type      = "MARKET"
 
 # ─────────────────────────────────────────────────────────────────────────────
 # BACKEND — single initialisation, cached for the session lifetime
@@ -344,23 +346,61 @@ div[data-testid="column"]:nth-of-type(1) div[data-testid="element-container"]:ha
     margin-bottom: 14px;
 }
 
-/* Streamlit Native Overrides to match Sleek Theme drop shadows & colors */
-div[data-testid="stRadio"] > div[role="radiogroup"] {
-    display: flex !important;
+/* Custom Segmented Buttons for Direction and Order Type */
+.direction-container button, .type-container button {
     background-color: #0F172A !important;
-    border-radius: 8px !important;
-    padding: 3px !important;
     border: 1px solid #1E293B !important;
-}
-div[data-testid="stRadio"] > div[role="radiogroup"] label {
-    flex: 1 !important;
-    justify-content: center !important;
-    padding: 6px 12px !important;
-    border-radius: 6px !important;
+    color: #94A3B8 !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    padding: 8px 16px !important;
+    border-radius: 8px !important;
     transition: all 0.2s ease !important;
+    width: 100% !important;
 }
-div[data-testid="stRadio"] > div[role="radiogroup"] label[data-baseweb="radio"] div:first-child {
-    display: none !important;
+
+/* Direction container column selectors for active highlights */
+/* Active BUY (first column button is green accent) */
+.direction-container.active-buy div[data-testid="column"]:nth-of-type(1) button {
+    background: rgba(34, 197, 94, 0.15) !important;
+    color: #4ADE80 !important;
+    border: 1px solid rgba(34, 197, 94, 0.3) !important;
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.1) !important;
+}
+
+/* Active SELL (second column button is red accent) */
+.direction-container.active-sell div[data-testid="column"]:nth-of-type(2) button {
+    background: rgba(239, 68, 68, 0.15) !important;
+    color: #F87171 !important;
+    border: 1px solid rgba(239, 68, 68, 0.3) !important;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.1) !important;
+}
+
+/* Type container column selectors for active highlights */
+/* Active MARKET (first column button is blue accent) */
+.type-container.active-mkt div[data-testid="column"]:nth-of-type(1) button {
+    background: rgba(59, 130, 246, 0.15) !important;
+    color: #3B82F6 !important;
+    border: 1px solid rgba(59, 130, 246, 0.3) !important;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Active LIMIT (second column button is blue accent) */
+.type-container.active-lmt div[data-testid="column"]:nth-of-type(2) button {
+    background: rgba(59, 130, 246, 0.15) !important;
+    color: #3B82F6 !important;
+    border: 1px solid rgba(59, 130, 246, 0.3) !important;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.1) !important;
+}
+
+.input-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #64748B;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+    margin-top: 14px;
 }
 
 /* High contrast modern Inputs configuration */
@@ -653,23 +693,37 @@ with col_center:
     </div>
     """, unsafe_allow_html=True)
 
-    # BUY / SELL segmented radio
-    side_selection = st.radio(
-        "Order side",
-        ["BUY / LONG", "SELL / SHORT"],
-        label_visibility="collapsed",
-        key="trade_side",
-    )
-    side_action = "BUY" if "BUY" in side_selection else "SELL"
+    # Direction
+    st.markdown('<div class="input-label">Direction</div>', unsafe_allow_html=True)
+    side_active_cls = "active-buy" if st.session_state.trade_side == "BUY" else "active-sell"
+    st.markdown(f'<div class="direction-container {side_active_cls}">', unsafe_allow_html=True)
+    c_buy, c_sell = st.columns(2)
+    with c_buy:
+        if st.button("BUY / LONG", key="btn_side_buy", use_container_width=True):
+            st.session_state.trade_side = "BUY"
+            st.rerun()
+    with c_sell:
+        if st.button("SELL / SHORT", key="btn_side_sell", use_container_width=True):
+            st.session_state.trade_side = "SELL"
+            st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
+    side_action = st.session_state.trade_side
 
-    # MARKET / LIMIT segmented radio
-    exec_type = st.radio(
-        "Order type",
-        ["MARKET EXECUTION", "LIMIT SPECIFICATION"],
-        label_visibility="collapsed",
-        key="trade_type",
-    )
-    order_type = "MARKET" if "MARKET" in exec_type else "LIMIT"
+    # Order Type
+    st.markdown('<div class="input-label">Order Type</div>', unsafe_allow_html=True)
+    type_active_cls = "active-mkt" if st.session_state.trade_type == "MARKET" else "active-lmt"
+    st.markdown(f'<div class="type-container {type_active_cls}">', unsafe_allow_html=True)
+    c_mkt, c_lmt = st.columns(2)
+    with c_mkt:
+        if st.button("MARKET", key="btn_type_mkt", use_container_width=True):
+            st.session_state.trade_type = "MARKET"
+            st.rerun()
+    with c_lmt:
+        if st.button("LIMIT", key="btn_type_lmt", use_container_width=True):
+            st.session_state.trade_type = "LIMIT"
+            st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
+    order_type = st.session_state.trade_type
 
     st.markdown("<div style='margin-top:12px;'></div>", unsafe_allow_html=True)
 
