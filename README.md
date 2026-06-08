@@ -44,16 +44,6 @@ A Python trading bot and Streamlit dashboard connected to the Binance Futures Te
 * **Dual-Channel Logging**: Coordinates standard output tracking and application-level file logs.
 
 ---
-## ⚡ Quick Start
-
-```bash
-git clone https://github.com/SunnySatwik/Trading-Bot.git
-cd Trading-Bot
-
-pip install -r requirements.txt
-
-streamlit run app.py
----
 
 ## 🏗️ Architecture Overview
 
