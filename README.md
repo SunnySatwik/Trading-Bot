@@ -41,7 +41,6 @@ A Python trading bot and Streamlit dashboard connected to the Binance Futures Te
 * **Cryptographic Request Signing**: Internal request constructor that generates HMAC-SHA256 signatures with UNIX timestamp salting for security.
 * **Interactive Watchlist Selection**: Selection card layout for major trading pairs (`BTCUSDT`, `ETHUSDT`, `BNBUSDT`) that serves as a click handler to dynamically update the active asset focus.
 * **Embedded Technical Charts**: Direct integration of a dark-themed TradingView advanced financial widget loaded below the navigation bar.
-* **Automatic Price Fallbacks**: Price representation logic supporting a robust fallback chain of `avgPrice` → `price` → `"MARKET"` → `"—"` to handle missing testnet fill price attributes.
 * **Dual-Channel Logging**: Coordinates standard output tracking and application-level file logs.
 
 ---
@@ -194,7 +193,12 @@ System logs are routed dynamically during execution to keep developer cycles aud
 
 * **Log Location**: Stored locally in a project-root file called `trading_bot.log`.
 * **Git Exclusions**: Runtime logs are ignored from version control to prevent local execution noise from polluting source trees.
-* **Predefined Examples**: Mock transaction traces detailing normal executions and errors are stored in the repo under [sample_logs/trading_bot.log.sample](sample_logs/trading_bot.log.sample).
+* **Example**:
+
+```text
+2026-06-08 14:05:32 INFO Order Request | Symbol=BTCUSDT | Side=BUY | Type=MARKET
+2026-06-08 14:05:32 INFO Order Success | OrderId=14486984539 | Status=NEW
+```
 
 ---
 
