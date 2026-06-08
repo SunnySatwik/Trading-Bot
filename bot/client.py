@@ -68,3 +68,21 @@ class BinanceClient:
             )
 
         return response.json()
+
+    def get_price(self, symbol):
+        """Return the latest mark price for *symbol* from the testnet.
+
+        Uses the public (unsigned) ticker endpoint — no API key required.
+        """
+        response = requests.get(
+            f"{self.BASE_URL}/fapi/v1/ticker/price",
+            params={"symbol": symbol},
+            timeout=5,
+        )
+
+        if response.status_code != 200:
+            raise BinanceAPIError(
+                f"Binance Error: {response.text}"
+            )
+
+        return float(response.json()["price"])

@@ -1,0 +1,15 @@
+2026-06-08 14:05:32,607 - INFO - Order Request | Symbol=BTCUSDT | Side=BUY | Type=MARKET | Quantity=0.001
+
+2026-06-08 14:05:32,902 - INFO - Order Success | OrderId=14486984539 | Status=NEW | Symbol=BTCUSDT | Side=BUY | Type=MARKET | ExecutedQty=0.0000
+
+2026-06-08 14:07:35,451 - INFO - Order Request | Symbol=BTCUSDT | Side=SELL | Type=LIMIT | Quantity=0.001 | Price=70000.0
+
+2026-06-08 14:07:35,736 - INFO - Order Success | OrderId=14487074167 | Status=NEW | Symbol=BTCUSDT | Side=SELL | Type=LIMIT | Price=70000.0 | ExecutedQty=0.0000
+
+2026-06-08 14:08:04,772 - ERROR - Validation Error | LIMIT order requires a valid price parameter
+
+2026-06-08 14:08:12,707 - ERROR - Validation Error | Side must be BUY or SELL
+
+2026-06-08 14:10:32,243 - INFO - Order Request | Symbol=BTCUSDT | Side=SELL | Type=LIMIT | Quantity=0.001 | Price=70000.0
+
+2026-06-08 14:10:32,555 - INFO - Order Success | OrderId=14487217346 | Status=NEW | Symbol=BTCUSDT | Side=SELL | Type=LIMIT | Price=70000.0 | ExecutedQty=0.0000
