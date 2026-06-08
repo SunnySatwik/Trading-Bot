@@ -163,8 +163,8 @@ python cli.py --symbol ETHUSDT --side SELL --type LIMIT --quantity 0.5 --price 3
 
 Run the visual terminal:
 
-```bash
-streamlit run app.py
+```powershell
+python -m streamlit run app.py
 ```
 
 Once loaded, the terminal is available via your web browser (typically on `http://localhost:8501`). 
